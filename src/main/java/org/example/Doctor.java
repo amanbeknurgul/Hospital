@@ -1,36 +1,17 @@
-public class Doctor {
+public class Doctor extends Person {
 
-    // 1. PRIVATE FIELDS
-    private int doctorId;
-    private String name;
+    // Child-specific fields
     private String specialization;
     private int experienceYears;
 
-    // 2. CONSTRUCTOR WITH PARAMETERS
-    public Doctor(int doctorId, String name, String specialization, int experienceYears) {
-        this.doctorId = doctorId;
-        this.name = name;
+    // Constructor using super()
+    public Doctor(int id, String name, int age, String specialization, int experienceYears) {
+        super(id, name, age, "Doctor"); // MUST be first
         this.specialization = specialization;
         this.experienceYears = experienceYears;
     }
 
-    // 3. DEFAULT CONSTRUCTOR
-    public Doctor() {
-        this.doctorId = 0;
-        this.name = "Unknown";
-        this.specialization = "General";
-        this.experienceYears = 0;
-    }
-
-    // 4. GETTERS
-    public int getDoctorId() {
-        return doctorId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
+    // Getters
     public String getSpecialization() {
         return specialization;
     }
@@ -39,39 +20,31 @@ public class Doctor {
         return experienceYears;
     }
 
-    // 5. SETTERS
-    public void setDoctorId(int doctorId) {
-        this.doctorId = doctorId;
+    // Override method 1
+    @Override
+    public void performDuty() {
+        System.out.println("Doctor " + name + " is treating patients (" + specialization + ").");
     }
 
-    public void setName(String name) {
-        this.name = name;
+    // Override method 2
+    @Override
+    public String getDescription() {
+        return "Doctor";
     }
 
-    public void setSpecialization(String specialization) {
-        this.specialization = specialization;
-    }
-
-    public void setExperienceYears(int experienceYears) {
-        this.experienceYears = experienceYears;
-    }
-
-    // 6. ADDITIONAL METHODS
+    // Unique methods
     public boolean isExperienced() {
         return experienceYears >= 10;
     }
 
-    public boolean canPerformSurgery() {
-        return experienceYears >= 5;
+    public void diagnosePatient(String patientName) {
+        System.out.println("Doctor " + name + " is diagnosing " + patientName + ".");
     }
 
-    // 7. toString()
     @Override
     public String toString() {
-        return "Doctor{doctorId=" + doctorId +
-                ", name='" + name + '\'' +
-                ", specialization='" + specialization + '\'' +
-                ", experienceYears=" + experienceYears +
-                '}';
+        return super.toString() +
+                " | Specialization: " + specialization +
+                " | Experience: " + experienceYears + " years";
     }
 }

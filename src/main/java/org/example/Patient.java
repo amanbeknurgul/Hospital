@@ -1,83 +1,56 @@
-public class Patient {
+public class Patient extends Person {
 
-    // 1. PRIVATE FIELDS
-    private int patientId;
-    private String fullName;
-    private int age;
+    // Child-specific fields
     private String bloodType;
+    private boolean admitted;
 
-    // 2. CONSTRUCTOR WITH PARAMETERS
-    public Patient(int patientId, String fullName, int age, String bloodType) {
-        this.patientId = patientId;
-        this.fullName = fullName;
-        this.age = age;
+    // Constructor using super()
+    public Patient(int id, String name, int age, String bloodType, boolean admitted) {
+        super(id, name, age, "Patient"); // MUST be first
         this.bloodType = bloodType;
+        this.admitted = admitted;
     }
 
-    // 3. DEFAULT CONSTRUCTOR
-    public Patient() {
-        this.patientId = 0;
-        this.fullName = "Unknown";
-        this.age = 0;
-        this.bloodType = "Unknown";
-    }
-
-    // 4. GETTERS
-    public int getPatientId() {
-        return patientId;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
+    // Getters
     public String getBloodType() {
         return bloodType;
     }
 
-    // 5. SETTERS
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
+    public boolean isAdmitted() {
+        return admitted;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    // Setters
+    public void setAdmitted(boolean admitted) {
+        this.admitted = admitted;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    // Override method 1
+    @Override
+    public void performDuty() {
+        System.out.println("Patient " + name + " is receiving medical treatment.");
     }
 
-    public void setBloodType(String bloodType) {
-        this.bloodType = bloodType;
+    // Override method 2
+    @Override
+    public String getDescription() {
+        return "Patient";
     }
 
-    // 6. ADDITIONAL METHODS
-    public boolean isMinor() {
+    // Unique methods
+    public void admit() {
+        admitted = true;
+        System.out.println(name + " has been admitted to the hospital.");
+    }
+
+    public boolean needsGuardian() {
         return age < 18;
     }
 
-    public String getAgeCategory() {
-        if (age < 18) {
-            return "Child";
-        } else if (age < 60) {
-            return "Adult";
-        } else {
-            return "Senior";
-        }
-    }
-
-    // 7. toString()
     @Override
     public String toString() {
-        return "Patient{patientId=" + patientId +
-                ", fullName='" + fullName + '\'' +
-                ", age=" + age +
-                ", bloodType='" + bloodType + '\'' +
-                '}';
+        return super.toString() +
+                " | Blood Type: " + bloodType +
+                " | Admitted: " + admitted;
     }
 }

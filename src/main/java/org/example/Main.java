@@ -1,61 +1,142 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Main {
+
+    private static ArrayList<Person> people = new ArrayList<>();
+    private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
 
-        System.out.println("=== Hospital Management System ===\n");
+        int choice;
 
-        // CREATE OBJECTS
-        Patient p1 = new Patient(101, "Ali Khan", 17, "O+");
-        Patient p2 = new Patient(102, "Dana Smith", 45, "A-");
-        Patient p3 = new Patient();
+        do {
+            System.out.println("\n========================================");
+            System.out.println(" HOSPITAL MANAGEMENT SYSTEM ");
+            System.out.println("========================================");
+            System.out.println("1. Add General Person");
+            System.out.println("2. Add Patient");
+            System.out.println("3. Add Doctor");
+            System.out.println("4. View All (Polymorphic)");
+            System.out.println("5. Demonstrate Polymorphism");
+            System.out.println("6. View Patients Only");
+            System.out.println("7. View Doctors Only");
+            System.out.println("0. Exit");
+            System.out.println("========================================");
+            System.out.print("Enter choice: ");
 
-        Doctor d1 = new Doctor(201, "Dr. Brown", "Cardiology", 12);
-        Doctor d2 = new Doctor(202, "Dr. Green", "Surgery", 4);
+            choice = scanner.nextInt();
+            scanner.nextLine();
 
-        Appointment a1 = new Appointment(301, "Ali Khan", "Dr. Brown", "10.10.2026", "Pending");
-        Appointment a2 = new Appointment();
+            switch (choice) {
+                case 1 -> addPerson();
+                case 2 -> addPatient();
+                case 3 -> addDoctor();
+                case 4 -> viewAll();
+                case 5 -> demonstratePolymorphism();
+                case 6 -> viewPatients();
+                case 7 -> viewDoctors();
+                case 0 -> System.out.println("Program finished.");
+                default -> System.out.println("Invalid choice.");
+            }
 
-        // DISPLAY OBJECTS
-        System.out.println("--- PATIENTS ---");
-        System.out.println(p1);
-        System.out.println(p2);
-        System.out.println(p3);
+        } while (choice != 0);
+    }
 
-        System.out.println("\n--- DOCTORS ---");
-        System.out.println(d1);
-        System.out.println(d2);
+    // -------- MENU METHODS --------
 
-        System.out.println("\n--- APPOINTMENTS ---");
-        System.out.println(a1);
-        System.out.println(a2);
+    private static void addPerson() {
+        System.out.print("ID: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
 
-        // TEST GETTERS
-        System.out.println("\n--- TESTING GETTERS ---");
-        System.out.println("Patient 1 name: " + p1.getFullName());
-        System.out.println("Doctor 1 specialization: " + d1.getSpecialization());
-        System.out.println("Appointment 1 status: " + a1.getStatus());
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
 
-        // TEST SETTERS
-        System.out.println("\n--- TESTING SETTERS ---");
-        p3.setFullName("New Patient");
-        p3.setAge(65);
-        p3.setBloodType("B+");
-        System.out.println(p3);
+        System.out.print("Age: ");
+        int age = scanner.nextInt();
 
-        // TEST METHODS
-        System.out.println("\n--- TESTING METHODS ---");
-        System.out.println(p1.getFullName() + " is minor: " + p1.isMinor());
-        System.out.println(p2.getFullName() + " age category: " + p2.getAgeCategory());
+        people.add(new Person(id, name, age, "Person"));
+        System.out.println("Person added.");
+    }
 
-        System.out.println(d1.getName() + " experienced: " + d1.isExperienced());
-        System.out.println(d2.getName() + " can perform surgery: " + d2.canPerformSurgery());
+    private static void addPatient() {
+        System.out.print("ID: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
 
-        a1.reschedule("15.10.2026");
-        System.out.println("Rescheduled appointment: " + a1);
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
 
-        a2.cancel();
-        System.out.println("Cancelled appointment: " + a2);
+        System.out.print("Age: ");
+        int age = scanner.nextInt();
+        scanner.nextLine();
 
-        System.out.println("\n=== Program Complete ===");
+        System.out.print("Blood type: ");
+        String blood = scanner.nextLine();
+
+        people.add(new Patient(id, name, age, blood, false));
+        System.out.println("Patient added.");
+    }
+
+    private static void addDoctor() {
+        System.out.print("ID: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Age: ");
+        int age = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Specialization: ");
+        String spec = scanner.nextLine();
+
+        System.out.print("Experience years: ");
+        int exp = scanner.nextInt();
+
+        people.add(new Doctor(id, name, age, spec, exp));
+        System.out.println("Doctor added.");
+    }
+
+    private static void viewAll() {
+        System.out.println("\n--- ALL PEOPLE (POLYMORPHIC LIST) ---");
+        for (Person p : people) {
+            System.out.println(p);
+
+            if (p instanceof Doctor d && d.isExperienced()) {
+                System.out.println(" ⭐ Experienced Doctor");
+            }
+            if (p instanceof Patient pat && pat.needsGuardian()) {
+                System.out.println(" 👶 Needs guardian");
+            }
+        }
+    }
+
+    private static void demonstratePolymorphism() {
+        System.out.println("\n--- POLYMORPHISM DEMO ---");
+        for (Person p : people) {
+            p.performDuty(); // SAME METHOD — DIFFERENT BEHAVIOR
+        }
+    }
+
+    private static void viewPatients() {
+        System.out.println("\n--- PATIENTS ONLY ---");
+        for (Person p : people) {
+            if (p instanceof Patient pat) {
+                System.out.println(pat);
+            }
+        }
+    }
+
+    private static void viewDoctors() {
+        System.out.println("\n--- DOCTORS ONLY ---");
+        for (Person p : people) {
+            if (p instanceof Doctor d) {
+                System.out.println(d);
+            }
+        }
     }
 }
